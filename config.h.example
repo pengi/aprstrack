@@ -1,6 +1,8 @@
 /*
     This file is part of APRStrack.
 
+    Copyright (C) 2010 Max Sikström / SA6BBC
+
     APRStrack is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -17,14 +19,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-
-#ifndef TRACKERID
-#error No TRACKERID defined
-#endif
-
-#define BEACONTIME	(170 + 4*TRACKERID)
-#define TRACKERSTR	"Arvika-tracker Infra"
-#define CALLSIGN	"SK6AB "
-#define SSID		(TRACKERID+5)
+/* How often (in seconds) to send messages */
+#define BEACONTIME	600
+/* Comment string sent in the tracker messages. Keep short */
+#define TRACKERSTR	"MyTracker"
+/* CALLSIGN must be of length 6 characters, and is padded with space */
+#define CALLSIGN	"SK6ZZZ"
+/* SSID is the number after the callsign, for example SK6ZZZ-7 */
+#define SSID		7
 
 #endif
