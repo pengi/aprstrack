@@ -21,14 +21,25 @@
 
 
 void batv_init( void ) {
-	ADMUX = (0<<REFS1)|(1<<REFS0)|(0<<ADLAR)|(0xE<<MUX0);
-	ADCSRA = (1<<ADEN)|(0<<ADATE)|(7<<ADPS0);
-	ADCSRB = (0<<ADTS0);
+    /* Measure the 1.1V internal ref signal with the ADC,
+     * but use Vref as reference. This makes it possible to calculate
+     * Vref.
+     */
+    ADMUX = (0<<REFS1)|(1<<REFS0)|(0<<ADLAR)|(0xE<<MUX0);
+
+    /* Init ADC without auto trigger */
+    ADCSRA = (1<<ADEN)|(0<<ADATE)|(7<<ADPS0);
+    ADCSRB = (0<<ADTS0);
 }
 
 uint16_t batv_get( void ) {
-	ADCSRA |= (1<<ADSC);
-	while( ADCSRA & (1<<ADSC) ){ /* Wait for conversion to complete */ }
-	return (1024L*110L)/ADC;
+    /* Start conversion */
+    ADCSRA |= (1<<ADSC);
+
+    /* Wait for conversion to complete */
+    while( ADCSRA & (1<<ADSC) ) {}
+
+    /* The measured level is 1.1V (110 units), calculate Vref in 0.01V units */
+    return (1024L*110L)/ADC;
 }
 
